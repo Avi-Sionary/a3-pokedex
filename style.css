@@ -1,0 +1,95 @@
+/*Type colors from bulbapedia https://bulbapedia.bulbagarden.net/wiki/Category:Type_color_templates*/
+
+.bug {
+    background-color: #91A119;
+}
+
+.dark {
+    background-color: #624D4E;
+}
+
+.dragon {
+    background-color: #5060E1;
+}
+
+.electric {
+    background-color: #FAC000;
+}
+
+.fairy {
+    background-color: #EF70EF;
+}
+
+.fighting {
+    background-color: #FF8000;
+}
+
+.fire {
+    background-color: #E62829;
+}
+
+.flying {
+    background-color: #81B9EF;
+}
+
+.ghost {
+    background-color: #704170;
+}
+
+.grass {
+    background-color: #3FA129;
+}
+
+.ground {
+    background-color: #915121;
+}
+
+.ice {
+    background-color: #3DCEF3;
+}
+
+.normal {
+    background-color: #9FA19F;
+}
+
+.poison {
+    background-color: #9141CB;
+}
+
+.psychic {
+    background-color: #EF4179;
+}
+
+.rock {
+    background-color: #AFA981;
+}
+
+.steel {
+    background-color: #60A1B8;
+}
+
+.water {
+    background-color: #2980EF;
+}
+
+.unknown {
+    background-color: #68A090;
+}
+
+#previous_pokemon_img, #next_pokemon_img, #current_pokemon_img {
+    width: 50px;
+    height: 50px;
+}
+
+.progress+.progress {
+    margin-top: 1rem;
+}
+
+/*TODO: For extra credit, use CSS to animate the pokemon's div in and out as the search criteria are updated.*/
+.pokemon {
+    display: block;
+}
+
+.pokemon.hide {
+    display: none;
+}

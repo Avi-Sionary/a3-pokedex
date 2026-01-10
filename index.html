@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+        <script src="https://colorjs.io/dist/color.global.js"></script>
+        <script src="https://unpkg.com/pokeapi-js-wrapper/dist/index.js"></script>
+        <script src="pokemon.js"></script>
+        <script src="utility.js"></script>
+        <script src="search_page.js"></script>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/x-icon" href="media/favicon.ico">
+        <title>Pokedex!</title>
+    </head>
+    <body onload="loadSearchPage()">
+        <div class="container">
+            <div class="row">
+                <nav class="navbar sticky-top navbar-light bg-light">
+                    <a class="navbar-brand" href="#">Pokedex!</a>
+                </nav>
+            </div>
+            <div class="row">
+                <!--A form input for the search box-->
+                <input class="form-control col-12" id="search" placeholder="Search by Pokemon name">
+                <!--Form inputs for each of the type checkboxes, in divs to help with responsivity.-->
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="bugCheckbox" type="checkbox" value="bug" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="bugCheckbox">Bug</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="darkCheckbox" type="checkbox" value="dark" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="darkCheckbox">Dark</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="dragonCheckbox" type="checkbox" value="dragon" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="dragonCheckbox">Dragon</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="electricCheckbox" type="checkbox" value="electric" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="electricCheckbox">Electric</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="fairyCheckbox" type="checkbox" value="fairy" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="fairyCheckbox">Fairy</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="fightingCheckbox" type="checkbox" value="fighting" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="fightingCheckbox">Fighting</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="fireCheckbox" type="checkbox" value="fire" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="fireCheckbox">Fire</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="flyingCheckbox" type="checkbox" value="flying" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="flyingCheckbox">Flying</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="ghostCheckbox" type="checkbox" value="ghost" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="ghostCheckbox">Ghost</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="grassCheckbox" type="checkbox" value="grass" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="grassCheckbox">Grass</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="groundCheckbox" type="checkbox" value="ground" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="groundCheckbox">Ground</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="iceCheckbox" type="checkbox" value="ice" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="iceCheckbox">Ice</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="normalCheckbox" type="checkbox" value="normal" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="normalCheckbox">Normal</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="poisonCheckbox" type="checkbox" value="poison" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="poisonCheckbox">Poison</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="psychicCheckbox" type="checkbox" value="psychic" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="psychicCheckbox">Psychic</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="rockCheckbox" type="checkbox" value="rock" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="rockCheckbox">Rock</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="steelCheckbox" type="checkbox" value="steel" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="steelCheckbox">Steel</label>
+                </div>
+                <div class="col-3 col-lg-2 col-xl-1">
+                    <input class="form-check-input" id="waterCheckbox" type="checkbox" value="water" checked onclick="updateSearchResults()">
+                    <label class="form-check-label" for="waterCheckbox">Water</label>
+                </div>
+            </div>
+            <div class="row">
+                <p class="col-12">There are <span id="number_pokemon">0</span> Pokemon matching this description.</p>
+            </div>
+            <div id="spinner" class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <div id="pokemon_list" class="row">
+
+            </div>
+        </div>
+    </body>
+</html>
