@@ -44,7 +44,7 @@ class Pokemon {
     //Returns the pokemon's name.
     //E.g., returns "Bulbasaur" for Bulbasaur.
     getName() {
-        return formatPokemonName(this.poke.name);
+        return formatString(this.poke.name);
     }
 
     //Returns a link to the pokemon's back sprite, hosted by PokeAPI.
