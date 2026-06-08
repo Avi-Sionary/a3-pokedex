@@ -1,0 +1,27 @@
+{
+  "name": "a3-pokedex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "pokemon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uci-inf-285/a3-pokedex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uci-inf-285/a3-pokedex/issues"
+  },
+  "homepage": "https://github.com/uci-inf-285/a3-pokedex#readme",
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.6",
+    "csv-parser": "^3.2.1",
+    "express": "^5.2.1",
+    "sqlite3": "^6.0.1"
+  }
+}

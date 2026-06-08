@@ -12,6 +12,11 @@ function formatPokemonName(str) {
     return str.replace('-', ' ').split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
 }
 
+//When passed a string of a pokemon name from the PokeAPI, formats it into a more readable word
+function formatString(str) {
+    return str.replace('-', ' ').split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
+}
+
 //Removes an id from the DOM
 function removeId(id) {
     document.getElementById(id).remove();

@@ -1,3 +1,16 @@
+@font-face {
+    font-family: 'PokemonGen3';
+    src: url('media/pokemon-gen3-battle.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/*
+body
+{
+    font-family: 'PokemonGen3', sans-serif;
+}*/
+
 /*Type colors from bulbapedia https://bulbapedia.bulbagarden.net/wiki/Category:Type_color_templates*/
 
 .bug {
@@ -92,4 +105,11 @@
 
 .pokemon.hide {
     display: none;
+}
+
+#type1_img, #type2_img {
+    width: 80px;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 4px;
 }
