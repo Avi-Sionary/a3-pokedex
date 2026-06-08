@@ -8,7 +8,7 @@ function getColorFromPercent(pct) {
 }
 
 //When passed a string of a pokemon name from the PokeAPI, formats it into a more readable word
-function formatPokemonName(str) {
+function formatString(str) {
     return str.replace('-', ' ').split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
 }
 
