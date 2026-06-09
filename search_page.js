@@ -49,46 +49,71 @@ function addPokemon(pokemon) {
 //Part 3: Update the search results.
 //This function gets called every time a person types a letter in the search box or checks or unchecks one of the type boxes.
 async function updateSearchResults() {
-    //Gets the pokedex and initializes all of the entries.
     let pokedex = await getPokedex();
-    for(let i = 0; i< pokedex.length; i++) {
+
+    for (let i = 0; i < pokedex.length; i++) {
         await pokedex[i].initialize();
     }
 
-    //Gets the search text.
-    let search = document.getElementById('search').value;
+    let search = document.getElementById('search').value.toLowerCase();
 
-    //Sets the number of pokemon matching the search description to 0.
     let searchedForPokemon = 0;
     document.getElementById('number_pokemon').textContent = searchedForPokemon;
 
-    for(let i = 0; i < pokedex.length; i++) {
+    let selectedTypes = getSelectedTypes();
+
+    for (let i = 0; i < pokedex.length; i++) {
         let p = pokedex[i];
-        //TODO: Use an if statement to check if the pokemon's name includes text entered in the search box.
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/includes
-        //For case-insensitive search, consider using toLowerCase to convert both the pokemon name and search box text.
-        //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/toLowerCase
-        //If a pokemon's name is not included in the text entered, hide the pokemon.
 
-        //TODO: Use an if statement(s) to check if the checkboxes for the pokemon's type(s) are checked.
-        //If a pokemon has two types, and either is unchecked, hide the pokemon.
+        let nameMatches = p.getName().toLowerCase().includes(search);
 
-        //TODO: If the pokemon matches the search text and types checked, show the pokemon.
-        //Also, update the total number of searched for pokemon.
-        
+        let pokemonTypes = [p.getType1(), p.getType2()]
+            .filter(type => type)
+            .map(type => type.toLowerCase());
+
+        let typeMatches = selectedTypes.length === 0 ||
+            selectedTypes.every(type => pokemonTypes.includes(type));
+
+        if (nameMatches && typeMatches) {
+            showPokemon(p);
+            searchedForPokemon++;
+        } else {
+            hidePokemon(p);
+        }
     }
+
+    document.getElementById('number_pokemon').textContent = searchedForPokemon;
 }
 
 //Part 3: A helper function for showing a particular pokemon.
 function showPokemon(pokemon) {
     let pokemonDOMId = pokemon.getId();
     //TODO: Find the pokemon in the DOM. Show it by removing the "hide" CSS property, if it exists.
-
+    let pokemonElement = document.getElementById(pokemonDOMId);
+    if (pokemonElement) {
+        pokemonElement.classList.remove('hide');
+    }
 }
 
 //Part 3: A helper function for hiding a particular pokemon.
 function hidePokemon(pokemon) {
     let pokemonDOMId = pokemon.getId();
     //TODO: Find the pokemon in the DOM. Hide it by adding the "hide" CSS property, if it does not already exist.
+    let pokemonElement = document.getElementById(pokemonDOMId);
+    if (pokemonElement) {
+        pokemonElement.classList.add('hide');
+    }
+}
 
+// Part 3: A helper function for getting a list of all the types that are currently checked.
+function getSelectedTypes() {
+    let checkboxes = document.querySelectorAll('.form-check-input');
+    let selectedTypes = [];
+
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) {
+            selectedTypes.push(checkbox.value.toLowerCase());
+        }
+    }
+    return selectedTypes;
 }

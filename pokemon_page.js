@@ -18,16 +18,11 @@ function updateDescription(pokemon) {
     let formattedNumber = pokemon.getFormattedNumber();
     document.getElementById('number').textContent = '#' + formattedNumber;
 
-    //let name = 'MissingNo';
     let name = pokemon.getName();
     document.getElementById('name').textContent = name;
     
-    //TODO: Get and assign the front sprite, back sprite, and cry links.
-    //let backSprite = 'media/missingno_back.png';
     let backSprite = pokemon.getBackSprite();
-    //let frontSprite = 'media/missingno_front.png'
     let frontSprite = pokemon.getFrontSprite();
-    //let cry = 'media/missingno.ogg'
     let cry = pokemon.getCry();
 
     document.getElementById("back_sprite").src = backSprite;
@@ -62,7 +57,6 @@ function updateDescription(pokemon) {
         type2ImgElement.style.display = 'none';
     }
     
-    //let pokedexDescription = 'MissingNO appears as a bug in the original pokemon games. We\'ll fix it here!'
     let pokedexDescription = pokemon.getPokedexDescription();
     document.getElementById('description').textContent = pokedexDescription;
 }
@@ -74,7 +68,6 @@ async function updateNavigation(pokemon) {
     let previousPokemonNumber = pokemonNumber - 1;
     let nextPokemonNumber = pokemonNumber + 1;
     //Creates new instances of the Pokemon class for the previous and next pokemon.
-    //You do not need to edit these lines.
     let previousPokemon = new Pokemon(previousPokemonNumber);
     await previousPokemon.initialize();
     let nextPokemon = new Pokemon(nextPokemonNumber);
@@ -99,7 +92,6 @@ async function updateNavigation(pokemon) {
 
 //Part 2a: Call methods of the Pokemon class to display the stats of the pokemon.
 function updateStats(pokemon) {
-    //TODO: Get and assign the stats of the pokemon.
     let hpStat = pokemon.getHp();
     let attackStat = pokemon.getAttack();
     let defenseStat = pokemon.getDefense();
@@ -120,14 +112,8 @@ function updateStat(statId, statValue) {
     let el = document.getElementById(statId);
     el.ariaValueNow = statValue;
     el.textContent = formatString(statId) + ': ' + statValue;
-    //TODO: Read up on Bootstrap's progress bar to learn what CSS properties are used for customizing the bar's width and color.
-    //https://getbootstrap.com/docs/5.3/components/progress/
-    //Then, use DOM manipulation to update those styles.
-    //https://www.w3schools.com/jsref/prop_html_style.asp
     el.style.width = (statValue / 255 * 100) + '%';
     el.style.backgroundColor = getColorFromPercent(statValue / 255);
-    //The getColorFromPercent() function in utility.js can help map stat values to colors.
-    
 }
 
 //Part 2b: Call methods of the Pokemon class to display the level up moves of the pokemon.
