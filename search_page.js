@@ -1,69 +1,64 @@
-//Function gets called once the page is loaded.
+let loadedPokedex = [];
+let selectedPokemon = undefined;
+
+// Function gets called once the page is loaded.
 async function loadSearchPage() {
     let searchInput = document.getElementById('search');
     searchInput.addEventListener('keyup', updateSearchResults);
 
-    let pokedex = await getPokedex();
-    //Loop over every pokemon in the pokedex and add it.
-    for(let i = 0; i< pokedex.length; i++) {
-        await pokedex[i].initialize();
-        addPokemon(pokedex[i]);
-        //Add 1 because the array starts at 0, but the count of Pokemon starts at 1
-        document.getElementById('number_pokemon').textContent = i+1;
+    loadedPokedex = await getPokedex();
+
+    for (let i = 0; i < loadedPokedex.length; i++) {
+        await loadedPokedex[i].initialize();
+        addPokemon(loadedPokedex[i]);
+
+        document.getElementById('number_pokemon').textContent = i + 1;
     }
 
-    //Remove the spinner.
     document.getElementById('spinner').style.display = 'none';
+
+    if (loadedPokedex.length > 0) {
+        selectPokemon(loadedPokedex[0]);
+    }
 }
 
-//Helper function to add each pokemon to the search results. You do not need to update this function.
 function addPokemon(pokemon) {
     let list = document.getElementById('pokemon_list');
 
     let div = document.createElement('div');
-    div.classList.add('pokemon', 'col-3', 'col-sm-2', 'col-lg-1');
+    div.classList.add('pokemon', 'dex-row');
     div.setAttribute('id', pokemon.getId());
+
     let href = document.createElement('a');
-    let pokeImg = document.createElement('img');
-    pokeImg.src = pokemon.getFrontSprite();
-    href.appendChild(pokeImg);
-    let name = document.createElement('div');
-    name.textContent = pokemon.getName();
-    href.appendChild(name);
     href.href = './pokedex.html?number=' + pokemon.getNumber();
-    let type1 = document.createElement('div');
-    type1.textContent = pokemon.getType1();
-    type1.classList.add(pokemon.getType1(), 'badge');
-    href.appendChild(type1);
-    if(pokemon.getType2()) {
-        let type2 = document.createElement('div');
-        type2.textContent = pokemon.getType2();
-        type2.classList.add(pokemon.getType2(), 'badge');
-        href.appendChild(type2);
-    }
+
+    let number = document.createElement('span');
+    number.classList.add('dex-number');
+    number.textContent = pokemon.getFormattedNumber();
+
+    let name = document.createElement('span');
+    name.classList.add('dex-name');
+    name.textContent = pokemon.getName();
+
+    href.appendChild(number);
+    href.appendChild(name);
+
+    div.addEventListener('mouseenter', function () {
+        selectPokemon(pokemon);
+    });
 
     div.appendChild(href);
     list.appendChild(div);
 }
 
-//Part 3: Update the search results.
-//This function gets called every time a person types a letter in the search box or checks or unchecks one of the type boxes.
 async function updateSearchResults() {
-    let pokedex = await getPokedex();
-
-    for (let i = 0; i < pokedex.length; i++) {
-        await pokedex[i].initialize();
-    }
-
     let search = document.getElementById('search').value.toLowerCase();
-
     let searchedForPokemon = 0;
-    document.getElementById('number_pokemon').textContent = searchedForPokemon;
-
     let selectedTypes = getSelectedTypes();
+    let firstVisiblePokemon = undefined;
 
-    for (let i = 0; i < pokedex.length; i++) {
-        let p = pokedex[i];
+    for (let i = 0; i < loadedPokedex.length; i++) {
+        let p = loadedPokedex[i];
 
         let nameMatches = p.getName().toLowerCase().includes(search);
 
@@ -77,37 +72,43 @@ async function updateSearchResults() {
         if (nameMatches && typeMatches) {
             showPokemon(p);
             searchedForPokemon++;
+
+            if (!firstVisiblePokemon) {
+                firstVisiblePokemon = p;
+            }
         } else {
             hidePokemon(p);
         }
     }
 
     document.getElementById('number_pokemon').textContent = searchedForPokemon;
+
+    if (firstVisiblePokemon) {
+        selectPokemon(firstVisiblePokemon);
+    } else {
+        clearPreview();
+    }
 }
 
-//Part 3: A helper function for showing a particular pokemon.
 function showPokemon(pokemon) {
-    let pokemonDOMId = pokemon.getId();
-    //TODO: Find the pokemon in the DOM. Show it by removing the "hide" CSS property, if it exists.
-    let pokemonElement = document.getElementById(pokemonDOMId);
+    let pokemonElement = document.getElementById(pokemon.getId());
+
     if (pokemonElement) {
         pokemonElement.classList.remove('hide');
     }
 }
 
-//Part 3: A helper function for hiding a particular pokemon.
 function hidePokemon(pokemon) {
-    let pokemonDOMId = pokemon.getId();
-    //TODO: Find the pokemon in the DOM. Hide it by adding the "hide" CSS property, if it does not already exist.
-    let pokemonElement = document.getElementById(pokemonDOMId);
+    let pokemonElement = document.getElementById(pokemon.getId());
+
     if (pokemonElement) {
         pokemonElement.classList.add('hide');
+        pokemonElement.classList.remove('selected');
     }
 }
 
-// Part 3: A helper function for getting a list of all the types that are currently checked.
 function getSelectedTypes() {
-    let checkboxes = document.querySelectorAll('.form-check-input');
+    let checkboxes = document.querySelectorAll('#type_dropdown_menu input[type="checkbox"]');
     let selectedTypes = [];
 
     for (let checkbox of checkboxes) {
@@ -115,5 +116,89 @@ function getSelectedTypes() {
             selectedTypes.push(checkbox.value.toLowerCase());
         }
     }
+
+    updateTypeDropdownButton(selectedTypes);
+
     return selectedTypes;
+}
+
+function selectPokemon(pokemon) {
+    selectedPokemon = pokemon;
+
+    let allRows = document.querySelectorAll('.dex-row');
+
+    for (let row of allRows) {
+        row.classList.remove('selected');
+    }
+
+    let selectedRow = document.getElementById(pokemon.getId());
+
+    if (selectedRow) {
+        selectedRow.classList.add('selected');
+    }
+
+    updatePreview(pokemon);
+}
+
+function updatePreview(pokemon) {
+    let previewImg = document.getElementById('preview_sprite');
+    let previewName = document.getElementById('preview_name');
+    let previewNumber = document.getElementById('preview_number');
+    let previewType1 = document.getElementById('preview_type1');
+    let previewType2 = document.getElementById('preview_type2');
+
+    if (!previewImg || !previewName || !previewNumber || !previewType1 || !previewType2) {
+        return;
+    }
+
+    previewImg.src = pokemon.getFrontSprite();
+    previewName.textContent = pokemon.getName();
+    previewNumber.textContent = pokemon.getFormattedNumber();
+
+    let type1 = pokemon.getType1();
+    let type2 = pokemon.getType2();
+
+    previewType1.src = pokemon.getTypeImage(type1);
+    previewType1.alt = type1;
+    previewType1.style.display = 'inline';
+
+    if (type2) {
+        previewType2.src = pokemon.getTypeImage(type2);
+        previewType2.alt = type2;
+        previewType2.style.display = 'inline';
+    } else {
+        previewType2.src = '';
+        previewType2.alt = '';
+        previewType2.style.display = 'none';
+    }
+}
+
+function clearPreview() {
+    let previewImg = document.getElementById('preview_sprite');
+    let previewName = document.getElementById('preview_name');
+    let previewNumber = document.getElementById('preview_number');
+    let previewType1 = document.getElementById('preview_type1');
+    let previewType2 = document.getElementById('preview_type2');
+
+    if (previewImg) previewImg.src = '';
+    if (previewName) previewName.textContent = '';
+    if (previewNumber) previewNumber.textContent = '';
+    if (previewType1) previewType1.style.display = 'none';
+    if (previewType2) previewType2.style.display = 'none';
+}
+
+function toggleTypeDropdown() {
+    document.getElementById('type_dropdown_menu').classList.toggle('hide');
+}
+
+function updateTypeDropdownButton(selectedTypes) {
+    let button = document.getElementById('type_dropdown_button');
+
+    if (selectedTypes.length === 0) {
+        button.textContent = '???';
+    } else if (selectedTypes.length === 1) {
+        button.textContent = selectedTypes[0].toUpperCase();
+    } else {
+        button.textContent = selectedTypes.length + ' TYPES';
+    }
 }

@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
         <script src="https://colorjs.io/dist/color.global.js"></script>
         <script src="https://unpkg.com/pokeapi-js-wrapper@1.1.2"></script>
@@ -13,82 +14,119 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
         <link rel="stylesheet" href="style.css">
         <link rel="icon" type="image/x-icon" href="media/favicon.ico">
+
         <title>Who's that Pokemon?</title>
     </head>
-    <body onload="loadPokedexEntry()">
-        <div class="container">
-            <nav class="navbar sticky-top navbar-light bg-light">
-                <a class="navbar-brand" href="index.html">Pokedex!</a>
-            </nav>
-            <div class="row">
-                <div class="col-9">
-                    <h1><span id="name"></span> <span id="number"></span></h1>
-                </div>
-                <div class="col-1">
-                    <a id="previous_pokemon">
-                        <img id="previous_pokemon_img">
-                        <span id="previous_pokemon_name"></span>
-                    </a>
-                </div>
-                <div class="col-1">
-                    <img id="current_pokemon_img">
-                </div>
-                <div class="col-1">
-                    <a id="next_pokemon">
-                        <img id="next_pokemon_img">
-                        <span id="next_pokemon_name"></span>
-                    </a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <h2>Description</h2>
+
+    <body class="entry-page" onload="loadPokedexEntry()">
+        <main id="entry_shell">
+
+            <a id="entry_back_link" href="index.html">← Pokedex</a>
+
+            <section id="entry_top">
+                <div id="entry_sprite_panel">
                     <img id="front_sprite">
-                    <img id="back_sprite">
-                    <p id="types">
-                        <img id="type1_img" src="">
-                        <span id="type1"></span>
-                        <img id="type2_img" src="">
-                        <span id="type2"></span>
-                    </p>
+                    <div id="number"></div>
+                </div>
+
+                <div id="entry_info_panel">
+                    <h1 id="name"></h1>
+                    <h2 id="category"></h2>
+
+                    <div id="entry_stats_grid">
+                        <div>
+                            <h3>TYPE 1</h3>
+                            <img id="type1_img">
+                        </div>
+
+                        <div>
+                            <h3>TYPE 2</h3>
+                            <img id="type2_img">
+                        </div>
+
+                        <div>
+                            <h3>HEIGHT</h3>
+                            <p id="height"></p>
+                        </div>
+
+                        <div>
+                            <h3>WEIGHT</h3>
+                            <p id="weight"></p>
+                        </div>
+                    </div>
+
                     <audio id="cry" controls></audio>
-                    <p>
-                        <span id="height">Height: 0m</span>
-                        <span id="weight">Weight: 0kg</span>
-                    </p>
-                    <p id="description"></p>
                 </div>
-                <div class="col-5">
-                    <h2>Stats</h2>
-                    <div class="progress">
-                        <div id="hp" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Hp: </div>
-                    </div>
-                    <div class="progress">
-                        <div id="attack" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Attack: </div>
-                    </div>
-                    <div class="progress">
-                        <div id="defense" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Defense: </div>
-                    </div>
-                    <div class="progress">
-                        <div id="special-attack" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Special Attack: </div>
-                    </div>
-                    <div class="progress">
-                        <div id="special-defense" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Special Defense: </div>
-                    </div>
-                    <div class="progress">
-                        <div id="speed" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255">Speed: </div>
-                    </div>
+            </section>
+
+            <section id="entry_description_panel">
+                <p id="description"></p>
+            </section>
+
+            <section id="entry_stats_panel">
+                <h2>BASE STATS</h2>
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="hp" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
                 </div>
-                <div class="col-3">
-                    <h2>Moves</h2>
-                    <table id="move-table">
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="attack" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
+                </div>
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="defense" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
+                </div>
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="special-attack" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
+                </div>
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="special-defense" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
+                </div>
+
+                <div class="stat-label"></div>
+                <div class="progress">
+                    <div id="speed" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="255"></div>
+                </div>
+            </section>
+
+            <section id="entry_moves_panel">
+                <h2>LEVEL-UP MOVES</h2>
+
+                <table id="move-table">
+                    <thead>
                         <tr>
-                            <th>Level</th>
+                            <th>Lv.</th>
                             <th>Move</th>
                         </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
+                    </thead>
+                    <tbody id="move-table-body"></tbody>
+                </table>
+            </section>
+
+            <nav id="entry_nav">
+                <a id="previous_pokemon">
+                    <img id="previous_pokemon_img">
+                    <span id="previous_pokemon_name"></span>
+                </a>
+
+                <img id="current_pokemon_img">
+
+                <a id="next_pokemon">
+                    <img id="next_pokemon_img">
+                    <span id="next_pokemon_name"></span>
+                </a>
+            </nav>
+
+            <img id="back_sprite" hidden>
+
+        </main>
     </body>
 </html>

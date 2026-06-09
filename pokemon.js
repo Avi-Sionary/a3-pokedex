@@ -56,6 +56,10 @@ class Pokemon {
         return 'pokemon_' + this.id;
     }
 
+    getCategory() {
+        return this.customData?.category || '';
+    }
+
     getName() {
         if (this.customData?.name) {
             return this.customData.name;
@@ -141,11 +145,15 @@ class Pokemon {
     }
 
     getTypeImage(type) {
-        if (!type) {
-            return "";
+        if (!type) return "";
+
+        if (type.toLowerCase() === "bird") {
+            return "media/types/UnknownIC_ZA.png";
         }
 
-        return 'media/types/' + type.toLowerCase() + 'IC_ZA.png';
+        let fixedType = type.charAt(0).toUpperCase() + type.slice(1).toLowerCase();
+
+        return 'media/types/' + fixedType + 'IC_ZA.png';
     }
 
     getPokedexDescription() {
